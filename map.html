@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+      <meta charset="UTF-8">
+      <title>แผนที่</title>
+      <style type="text/css">
+        html{
+          height:100%; 
+        }
+        body{ 
+          margin:0px;
+          height:100%; 
+          display: flex;
+          flex-direction: row;
+        }
+        #map {
+          height: 100%;
+          flex: 4;
+        }
+        #searchPlace {
+          flex: 2;
+        }
+        #result {
+          height: 400px;
+          overflow-y: scroll;
+        }
+        #suggest {
+          position: absolute;
+          display: none;
+          background-color: #ffffff;
+          border: 1px solid #000;
+          padding: 4px;
+          flex-direction: column;
+        }
+      </style>
+      <script 
+          type="text/javascript" 
+          src="https://api.longdo.com/map/?key=e4a20fd01564f4e9197b1ba1e5de0cf6"
+      ></script>
+      <script>
+        var map;
+        var search;
+        function init() {
+          map = new longdo.Map({
+            placeholder: document.getElementById('map')
+          });
+          search = document.getElementById('search');
+          suggest = document.getElementById('suggest');
+          map.Search.placeholder(
+          document.getElementById('result')
+          );
+          search.onkeyup = function(event) {
+         if((event || window.event).keyCode != 13)
+         return;
+         doSearch();
+         }
+         search.oninput = function() {
+         if (search.value.length < 3) {
+        suggest.style.display = 'none';
+        return;
+        }
+  
+        map.Search.suggest(search.value);
+        map.Event.bind('suggest', function(result) {
+      if (result.meta.keyword != search.value) return;
+  
+      suggest.innerHTML = '';
+      for (var i = 0, item; item = result.data[i]; ++i) {
+    longdo.Util.append(suggest, 'a', {
+      innerHTML: item.d,
+      href: 'javascript:doSuggest(\'' + item.w + '\')'
+       });
+      }
+      suggest.style.display = 'flex';
+        });
+      };
+         function doSearch() {
+        map.Search.search(search.value);
+        suggest.style.display = 'none';
+        }
+        function doSuggest(value) {
+         search.value = value;
+        doSearch();
+        }
+          map.Layers.externalOptions({ googleQuery: 'key=AIzaSyC3mivAjFula_ef5ZWga3aFiqLHyDGw2YE' });
+          map.Layers.setBase(longdo.Layers.GOOGLE_SATELLITE);
+        }
+      </script>
+  </head>
+  <body onload="init();">
+      <div id="map"></div>
+      <div id="searchPlace">
+        <input id="search"></input>
+        <div id="suggest"></div>
+        <div id="result"></div>
+      </div>
+  </body>
+</html>
