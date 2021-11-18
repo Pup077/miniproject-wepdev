@@ -44,7 +44,7 @@
                         <a href="/miniprojack/from4.html" class="nav-link">ติดต่อ</a>
                     </li>
                     <li class="nav-item">
-                        <a href="/miniprojack/login-admin/login.php" class="btn btn-outline-success">เข้าสู่ระบบแอดมิน</a></p>
+                        <a href="/miniprojack/login-admin/login.php" class="btn btn-outline-success">เข้าสู่ระบบเจ้าหน้าที่</a></p>
                     </li>   
                 </ul>
             </div>
